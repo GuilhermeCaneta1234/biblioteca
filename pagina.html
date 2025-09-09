@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python e HTML na Web</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #2c3e50;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f0f0f0;
+      padding: 1rem;
+      overflow-x: auto;
+      border-left: 4px solid #4a90e2;
+      border-radius: 6px;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      color: #c7254e;
+    }
+
+    a {
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #4a90e2;
+      color: white;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Python e HTML Juntos: Uma Dupla Poderosa na Web</h1>
+    <p>Entenda como essas linguagens se complementam no desenvolvimento web.</p>
+  </header>
+
+  <main>
+    <h2>O que é HTML? (A Estrutura da Página)</h2>
+    <p>HTML (HyperText Markup Language) define a estrutura de uma página. Ele é como o projeto de uma casa.</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+   &lt;title&gt;Minha Primeira Página&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+   &lt;h1&gt;Bem-vindo ao meu site!&lt;/h1&gt;
+   &lt;p&gt;Este é um parágrafo de exemplo.&lt;/p&gt;
+   &lt;a href="https://www.google.com"&gt;Ir para o Google&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <h2>O que é Python? (A Lógica por Trás da Cena)</h2>
+    <p>Python é uma linguagem de programação usada no backend, onde processa dados, interage com banco de dados e executa a lógica do sistema.</p>
+    <pre><code>nome = "Mundo"
+mensagem = f"Olá, {nome}!"
+print(mensagem)</code></pre>
+
+    <h2>Como Eles Trabalham Juntos?</h2>
+    <p>Com frameworks como <strong>Flask</strong> ou <strong>Django</strong>, Python processa as requisições e retorna HTML personalizado ao navegador.</p>
+
+    <h2>Exemplo Prático com Flask</h2>
+    <pre><code>from flask import Flask, render_template_string
+from datetime import datetime
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    nome_usuario = "Visitante"
+    hora = datetime.now().strftime("%H:%M:%S em %d/%m/%Y")
+    html_content = f"""
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;&lt;title&gt;Saudação&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1&gt;Olá, {nome_usuario}!&lt;/h1&gt;
+    &lt;p&gt;A hora atual é: {hora}&lt;/p&gt;
+    &lt;/body&gt;&lt;/html&gt;
+    """
+    return render_template_string(html_content)
+
+app.run(debug=True)</code></pre>
+
+    <h2>Templates (Jinja2)</h2>
+    <p>Você também pode usar arquivos HTML com variáveis, facilitando a reutilização de código:</p>
+    <pre><code>&lt;h1&gt;Olá, {{ nome }}!&lt;/h1&gt;
+&lt;p&gt;Agora é {{ data_hora }}.&lt;/p&gt;</code></pre>
+
+    <p><a href="pagina2.html">➡ Ir para a Página 2: Exemplo de Aplicação Web</a></p>
+  </main>
+
+  <footer>
+    &copy; 2025 Python + HTML. Todos os direitos reservados.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Validador de E-mail</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #mensagem {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Validador de E-mail</h1>
+    <input type="text" id="email" placeholder="Digite seu e-mail" />
+    <br>
+    <button onclick="validarEmail()">Validar</button>
+    <p id="mensagem"></p>
+  </div>
+
+  <script>
+    function validarEmail() {
+      const email = document.getElementById("email").value;
+      const mensagem = document.getElementById("mensagem");
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (regex.test(email)) {
+        mensagem.textContent = "E-mail válido ✅";
+        mensagem.style.color = "green";
+      } else {
+        mensagem.textContent = "E-mail inválido ❌";
+        mensagem.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>

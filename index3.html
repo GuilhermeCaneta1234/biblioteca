@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>index3 - Meu Ciclo de Estudos</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1f2937; /* fundo escuro */
+      color: #f3f4f6; /* texto claro */
+    }
+
+    input, button {
+      background-color: #374151;
+      color: #f3f4f6;
+      border: 1px solid #4b5563;
+    }
+
+    input:focus, button:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.5);
+    }
+
+    #study-form {
+      transition: transform 0.2s;
+    }
+
+    #study-form:hover {
+      transform: scale(1.01);
+    }
+
+    button:hover {
+      cursor: pointer;
+    }
+
+    .card {
+      background-color: #111827;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-6">♟️ Ciclo de Estudos de Xadrez</h1>
+
+    <!-- Formulário -->
+    <form id="study-form" class="card p-4 rounded shadow mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <input type="text" id="subject" placeholder="Tópico de Xadrez (ex: Abertura Inglesa)" class="p-2 rounded w-full" required />
+        <input type="number" id="duration" placeholder="Duração (min)" class="p-2 rounded w-full" required />
+        <input type="date" id="date" class="p-2 rounded w-full" required />
+      </div>
+      <button type="submit" class="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Salvar Estudo</button>
+    </form>
+
+    <!-- Lista de Estudos -->
+    <div class="card p-4 rounded shadow mb-6">
+      <h2 class="text-xl font-semibold mb-4">📒 Histórico</h2>
+      <ul id="study-list" class="space-y-2"></ul>
+    </div>
+
+    <!-- Gráfico -->
+    <div class="card p-4 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">📊 Gráfico de Estudos</h2>
+      <canvas id="studyChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("study-form");
+      const studyList = document.getElementById("study-list");
+      const chartCtx = document.getElementById("studyChart").getContext("2d");
+  
+      let studies = JSON.parse(localStorage.getItem("studies")) || [];
+  
+      function updateList() {
+        studyList.innerHTML = "";
+        studies.forEach((item, index) => {
+          const li = document.createElement("li");
+          li.className = "border border-gray-600 p-2 rounded flex justify-between items-center";
+          li.innerHTML = `
+            <div>
+              <strong>${item.subject}</strong> - ${item.duration}min em ${item.date}
+            </div>
+            <button onclick="removeStudy(${index})" class="text-red-400 hover:text-red-600">🗑️</button>
+          `;
+          studyList.appendChild(li);
+        });
+      }
+  
+      function updateChart() {
+        const data = {};
+        studies.forEach(s => {
+          data[s.subject] = (data[s.subject] || 0) + parseInt(s.duration);
+        });
+  
+        const chartData = {
+          labels: Object.keys(data),
+          datasets: [{
+            label: "Tempo Estudado (min)",
+            data: Object.values(data),
+            backgroundColor: [
+              '#3B82F6','#FBBF24','#10B981','#EF4444','#8B5CF6','#EC4899','#FCD34D','#0EA5E9'
+            ]
+          }]
+        };
+  
+        if (window.studyChart) window.studyChart.destroy();
+        window.studyChart = new Chart(chartCtx, {
+          type: 'pie',
+          data: chartData,
+          options: {
+            onClick: (evt, elements) => {
+              if (elements.length > 0) {
+                const chartElement = elements[0];
+                const subject = window.studyChart.data.labels[chartElement.index];
+                const urlSafeSubject = subject.toLowerCase().replace(/ /g, '-');
+                window.open(`${urlSafeSubject}.html`, '_blank');
+              }
+            }
+          }
+        });
+      }
+  
+      function removeStudy(index) {
+        studies.splice(index, 1);
+        localStorage.setItem("studies", JSON.stringify(studies));
+        updateList();
+        updateChart();
+      }
+  
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const subject = document.getElementById("subject").value;
+        const duration = document.getElementById("duration").value;
+        const date = document.getElementById("date").value;
+  
+        studies.push({ subject, duration, date });
+        localStorage.setItem("studies", JSON.stringify(studies));
+  
+        form.reset();
+        updateList();
+        updateChart();
+      });
+  
+      updateList();
+      updateChart();
+    });
+  </script>
+  
